@@ -1,2 +1,2 @@
 # Herramientas-computacionales-Semana-Tec-
-Actividades de curso. 
+Actividades de curso profesor Omar.
