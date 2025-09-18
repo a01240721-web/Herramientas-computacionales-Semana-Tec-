@@ -6,14 +6,15 @@ import cv2
 import pickle
 from datetime import datetime
 
-# Initialize camera
+# Initialize camera (compatible con macOS)
+# Ajusta `cam_port` si tu cámara está en otro índice (0, 1, ...)
 cam_port = 1
-cam = cv2.VideoCapture()
-# On Windows you might use cv2.CAP_DSHOW; on macOS/OpenCV defaults are fine.
-try:
-    cam.open(cam_port, cv2.CAP_DSHOW)
-except Exception:
-    cam.open(cam_port)
+cam = cv2.VideoCapture(cam_port)
+if not cam.isOpened():
+    # Intenta con el puerto 0 si el puerto por defecto no funciona
+    cam = cv2.VideoCapture(0)
+    if not cam.isOpened():
+        raise RuntimeError("No se pudo abrir la cámara. Ajusta `cam_port` al índice correcto.")
 font = cv2.FONT_HERSHEY_SIMPLEX
 
 # Read images
@@ -26,14 +27,12 @@ while (i<n_images):
 
     # Show result
     if result:
-        # Convert to grayscale and compute edges
+        # Convertir a escala de grises y suavizar antes de detectar bordes
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-        # Optional: blur to reduce noise
-        blurred = cv2.GaussianBlur(gray, (5,5), 1.4)
-        # Canny edge detector - thresholds can be tuned
+        blurred = cv2.GaussianBlur(gray, (5, 5), 1.4)
         edges = cv2.Canny(blurred, 50, 150)
 
-        # Convert edges to BGR so we can draw text in color if desired
+        # Convertir a BGR para poder dibujar texto y mostrar en color (bordes en blanco sobre fondo negro)
         edges_bgr = cv2.cvtColor(edges, cv2.COLOR_GRAY2BGR)
 
         text = "Image " + str(i) + "/" + str(n_images)
@@ -41,12 +40,12 @@ while (i<n_images):
 
         cv2.imshow("<<Press + to capture image - edges shown>>", edges_bgr)
 
-        # WaitKey once per loop and store the key
+        # Leer la tecla una sola vez por iteración
         key = cv2.waitKey(1) & 0xFF
         if key == ord('+'):
-            # Save the original color frame (or edges if you prefer)
+            # Guardar el frame original a color (cambia a `edges` si prefieres guardar los bordes)
             images.append(frame)
-            i+=1
+            i += 1
             print("Image " + str(i) + "/" + str(n_images))
         elif key == ord('q'):
             break
