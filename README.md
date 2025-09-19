@@ -16,8 +16,6 @@ Actividades de curso profesor Omar.
 	•	Preprocesar imágenes a formato binario y 32x32 px.
 	•	Entrenar y evaluar un MLP.
 # ¿Qué aprendiste en este curso?
-
-En este curso aprendí a:
 	•	Usar OpenCV en Python para el manejo de imágenes y video en tiempo real.
 	•	Aplicar técnicas de procesamiento digital de imágenes como cambios de color, filtros, transformaciones, segmentación y detección de bordes/formas.
 	•	Desarrollar programas que integran captura de cámara con análisis en vivo.
